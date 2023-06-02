@@ -37,6 +37,10 @@ const style = {
 const MyResponsiveContainer = styled(ResponsiveContainer)`
   background-color: white;
 `
+const MyLegendStyled = styled(Legend)`
+  
+
+`
 const RadialChart = () =>{
     return (
       <MyResponsiveContainer minHeight={500} width="100%" height="100%">
@@ -47,7 +51,7 @@ const RadialChart = () =>{
             clockWise
             dataKey="pv"
           />
-          <Legend iconType='circle' iconSize={10} layout="vertical" verticalAlign="middle" wrapperStyle={style} />
+          <MyLegendStyled  iconType='circle' iconSize={10} layout="vertical" verticalAlign="middle" wrapperStyle={style} />
         </RadialBarChart>
       </MyResponsiveContainer>
     );

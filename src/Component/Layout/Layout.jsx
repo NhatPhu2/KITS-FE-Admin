@@ -12,6 +12,7 @@ import Dashboard from "../../Container/Dashboard/index";
 import UserManagement from "../../Container/UserManagement/index";
 import CustomerManagement from "../../Container/CustomerManagement/index";
 import ProductManagement from "../../Container/ProductManagement/index";
+import { Outlet,Link } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -33,17 +34,12 @@ const { useBreakpoint } = Grid;
 const PrimaryLayout = () => {
   const screens = useBreakpoint();
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState("1");
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const onBreakPoint = (event) => {
     // console.log(event)
-  };
-  useEffect(() => {}, [screens]);
-  const onSelectMenuKey = (event) => {
-    setSelectedMenu(event.key);
-  };
+  }
   return (
     <Layout
       style={{
@@ -59,11 +55,16 @@ const PrimaryLayout = () => {
         {/* <div className="demo-logo-vertical" /> */}
         <Menu
           theme="dark"
-          onSelect={onSelectMenuKey}
-          selectedKeys={selectedMenu}
+          defaultSelectedKeys={"1"}
           mode="inline"
-          items={items}
-        />
+        >
+
+        {items.map((element) =>(
+          <Menu.Item key={element.key} icon={element.icon}>
+            <Link to={"/"+element.label.toLowerCase()}>{element.label}</Link> 
+          </Menu.Item>
+        ))}
+        </Menu>
       </Sider>
       <Layout>
         <Header
@@ -96,10 +97,7 @@ const PrimaryLayout = () => {
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
-          {selectedMenu === "1" && <Dashboard />}
-          {selectedMenu === "2" && <UserManagement />}
-          {selectedMenu === "3" && <CustomerManagement />}
-          {selectedMenu === "4" && <ProductManagement />}
+          <Outlet/>
         </Content>
         <Footer
           style={{
