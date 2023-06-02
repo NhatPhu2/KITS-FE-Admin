@@ -5,9 +5,13 @@ import {
   DesktopOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { useState } from "react";
+import { Breadcrumb, Layout, Menu, theme, Grid } from "antd";
+import { useState, useEffect } from "react";
 import HeaderDashboard from "../Header/index";
+import Dashboard from "../../Container/Dashboard/index";
+import UserManagement from "../../Container/UserManagement/index";
+import CustomerManagement from "../../Container/CustomerManagement/index";
+import ProductManagement from "../../Container/ProductManagement/index";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -25,11 +29,21 @@ const items = [
   getItem("Orders", "5", <DesktopOutlined />),
   getItem("Coupon", "6", <DesktopOutlined />),
 ];
+const { useBreakpoint } = Grid;
 const PrimaryLayout = () => {
+  const screens = useBreakpoint();
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState("1");
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const onBreakPoint = (event) => {
+    // console.log(event)
+  };
+  useEffect(() => {}, [screens]);
+  const onSelectMenuKey = (event) => {
+    setSelectedMenu(event.key);
+  };
   return (
     <Layout
       style={{
@@ -39,12 +53,14 @@ const PrimaryLayout = () => {
       <Sider
         collapsible
         collapsed={collapsed}
+        breakpoint="lg"
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div className="demo-logo-vertical" />
+        {/* <div className="demo-logo-vertical" /> */}
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
+          onSelect={onSelectMenuKey}
+          selectedKeys={selectedMenu}
           mode="inline"
           items={items}
         />
@@ -66,6 +82,7 @@ const PrimaryLayout = () => {
           }}
           children={<HeaderDashboard />}
         />
+
         <Content
           style={{
             margin: "0 16px",
@@ -79,15 +96,10 @@ const PrimaryLayout = () => {
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-            }}
-          >
-            Bill is a cat.
-          </div>
+          {selectedMenu === "1" && <Dashboard />}
+          {selectedMenu === "2" && <UserManagement />}
+          {selectedMenu === "3" && <CustomerManagement />}
+          {selectedMenu === "4" && <ProductManagement />}
         </Content>
         <Footer
           style={{
